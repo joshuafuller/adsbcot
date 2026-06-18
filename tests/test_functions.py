@@ -168,8 +168,8 @@ class FunctionsTestCase(unittest.TestCase):
 
         point = cot.findall("point")
         assert point[0].tag == "point"
-        assert point[0].attrib["lat"] == "37.836449"
-        assert point[0].attrib["lon"] == "-122.030281"
+        assert point[0].attrib["lat"] == "37.8364"
+        assert point[0].attrib["lon"] == "-122.0302"
         assert point[0].attrib["hae"] == "1143.0"
 
         detail = cot.findall("detail")
@@ -186,8 +186,8 @@ class FunctionsTestCase(unittest.TestCase):
         cot = adsbcot.functions.adsb_to_cot(craft)
         assert b"ICAO-A9EE47" in cot
         assert b"a-n-A-C-F" in cot
-        assert b"37.836449" in cot
-        assert b"-122.030281" in cot
+        assert b"37.8364" in cot
+        assert b"-122.0302" in cot
         assert b"1143.0" in cot
 
     def test_adsb_to_cot_no_lat(self):
@@ -220,8 +220,8 @@ class FunctionsTestCase(unittest.TestCase):
 
         point = cot.findall("point")
         assert point[0].tag == "point"
-        assert point[0].attrib["lat"] == "37.370833"
-        assert point[0].attrib["lon"] == "-124.300033"
+        assert point[0].attrib["lat"] == "37.3708"
+        assert point[0].attrib["lon"] == "-124.3"
         assert point[0].attrib["hae"] == "9999999.0"
 
         detail = cot.findall("detail")

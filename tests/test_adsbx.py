@@ -150,8 +150,8 @@ def test_adsb_to_cot_xml(sample_feed):
 
     point = cot.findall("point")
     assert point[0].tag == "point"
-    assert point[0].attrib["lat"] == "37.836449"
-    assert point[0].attrib["lon"] == "-122.030281"
+    assert point[0].attrib["lat"] == "37.8364"
+    assert point[0].attrib["lon"] == "-122.0302"
     assert point[0].attrib["hae"] == "1143.0"
 
     detail = cot.findall("detail")
@@ -177,7 +177,7 @@ def test_adsb_to_cot(sample_feed):
     expected = (
         b'<event version="2.0" type="a-.-A-C-F" uid="ICAO-A9EE47" how="m-g" '
         b'time="2021-05-19T22:07:38.928623Z" start="2021-05-19T22:07:38.928623Z" '
-        b'stale="2021-05-19T22:09:38.928623Z"><point lat="37.836449" lon="-122.030281" ce="10" le="2" '
+        b'stale="2021-05-19T22:09:38.928623Z"><point lat="37.8364" lon="-122.0302" ce="10" le="2" '
         b'hae="1143.0" /><detail uid="ICAO-A9EE47" remarks="N739UL-- ICAO: A9EE47 REG:  Flight: N739UL Type:  '
         b'Squawk: None Category: A1 (via adsbcot@rorqual)"><UID Droid="ICAO-A9EE47" />'
         b'<contact callsign="N739UL--" /><track course="50.1" speed="40.641076" /><remarks>N739UL-- ICAO: '
@@ -217,8 +217,8 @@ def test_adsb_to_cot_with_known_craft(sample_feed, sample_known_craft):
 
     point = cot.findall("point")
     assert point[0].tag == "point"
-    assert point[0].attrib["lat"] == "37.836449"
-    assert point[0].attrib["lon"] == "-122.030281"
+    assert point[0].attrib["lat"] == "37.8364"
+    assert point[0].attrib["lon"] == "-122.0302"
     assert point[0].attrib["hae"] == "1143.0"
 
     detail = cot.findall("detail")

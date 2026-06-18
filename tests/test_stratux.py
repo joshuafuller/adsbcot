@@ -253,8 +253,8 @@ def test_adsb_to_cot(sample_craft):
 
     point = cot.findall("point")
     assert point[0].tag == "point"
-    assert point[0].attrib["lat"] == "37.46306"
-    assert point[0].attrib["lon"] == "-122.264626"
+    assert point[0].attrib["lat"] == "37.463"
+    assert point[0].attrib["lon"] == "-122.2646"
     assert point[0].attrib["hae"] == "2232.6600000000003"
 
     detail = cot.findall("detail")
@@ -290,8 +290,8 @@ def test_adsb_to_cot_with_known_craft(sample_craft, sample_known_craft):
 
     point = cot.findall("point")
     assert point[0].tag == "point"
-    assert point[0].attrib["lat"] == "37.46306"
-    assert point[0].attrib["lon"] == "-122.264626"
+    assert point[0].attrib["lat"] == "37.463"
+    assert point[0].attrib["lon"] == "-122.2646"
     assert point[0].attrib["hae"] == "2232.6600000000003"
 
     detail = cot.findall("detail")
