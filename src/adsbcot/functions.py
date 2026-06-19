@@ -339,27 +339,23 @@ def adsb_to_cot_xml(  # NOQA pylint: disable=too-many-locals,too-many-branches,t
         usericon.set("iconsetpath", icon)
         detail.append(usericon)
 
-    cot_d = {
-        "lat": lat,
-        "lon": lon,
-        "ce": str(ce),
-        "le": str(le),
-        "hae": str(hae),
-        "uid": cot_uid,
-        "cot_type": cot_type,
-        "stale": cot_stale,
-    }
-    cot = pytak.gen_cot_xml(**cot_d)
-    cot.set("access", config.get("COT_ACCESS", pytak.DEFAULT_COT_ACCESS))
-    cot.set("qos", "1-r-c")
-
-    _detail = cot.findall("detail")[0]
-    flowtags = _detail.findall("_flow-tags_")
-    detail.extend(flowtags)
-    cot.remove(_detail)
-    cot.append(detail)
-
-    return cot
+    return pytak.cot_event(
+        uid=cot_uid,
+        cot_type=cot_type,
+        stale=cot_stale,
+        point=pytak.cot_point(lat=lat, lon=lon, ce=ce, hae=hae, le=le),
+        detail=pytak.cot_detail(
+            track,
+            contact,
+            remarks,
+            __adsb,
+            _radio,
+            *([usericon] if icon else []),
+            flow_tag_host_id=cot_host_id,
+        ),
+        access=config.get("COT_ACCESS", pytak.DEFAULT_COT_ACCESS),
+        qos="1-r-c",
+    )
 
 
 def gen_sensor_cot(
@@ -381,21 +377,15 @@ def gen_sensor_cot(
     sensor_elem.set("sensor_id", sensor_id)
     sensor_elem.set("type", payload_type)
 
-    detail = ET.Element("detail")
-    detail.append(contact)
-    detail.append(sensor_elem)
-
-    cot = pytak.gen_cot_xml(
-        lat=lat, lon=lon, hae=str(hae), ce=ce, le=le,
-        uid=f"SENSOR.{sensor_id}", cot_type=cot_type, stale=cot_stale,
+    return pytak.cot_event(
+        uid=f"SENSOR.{sensor_id}",
+        cot_type=cot_type,
+        stale=cot_stale,
+        point=pytak.cot_point(lat=lat, lon=lon, hae=hae, ce=ce, le=le),
+        detail=pytak.cot_detail(contact, sensor_elem, flow_tag=False),
+        how="m-g",
+        access=config.get("COT_ACCESS", pytak.DEFAULT_COT_ACCESS),
     )
-    cot.set("how", "m-g")
-    cot.set("access", config.get("COT_ACCESS", pytak.DEFAULT_COT_ACCESS))
-    _detail = cot.find("detail")
-    if _detail is not None:
-        cot.remove(_detail)
-    cot.append(detail)
-    return cot
 
 
 def adsb_to_cot(
@@ -405,6 +395,4 @@ def adsb_to_cot(
 ) -> Optional[bytes]:
     """Return CoT XML object as an XML string."""
     cot: Optional[ET.Element] = adsb_to_cot_xml(craft, config, known_craft)
-    return (
-        b"\n".join([pytak.DEFAULT_XML_DECLARATION, ET.tostring(cot)]) if cot else None
-    )
+    return pytak.serialize_cot(cot) if cot is not None else None
