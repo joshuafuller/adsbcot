@@ -16,7 +16,7 @@
 #
 
 [Unit]
-Description=AISCOT: Display Aircraft in TAK - ADS-B to TAK Gateway
+Description=ADSBCOT: Display Aircraft in TAK - ADS-B to TAK Gateway
 Documentation=https://github.com/snstac/adsbcot
 Wants=network.target
 After=network.target
